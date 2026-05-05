@@ -17,18 +17,19 @@ export default function AdminSidebar() {
           <li><Link className="button button-ghost button-content justify-start w-full hover:text-primary-hover" to="./"><span className="icon-material">home</span> แดชบอร์ด</Link></li>
           <li><Link className="button button-ghost button-content justify-start w-full hover:text-primary-hover" to="./products"><span className="icon-material">storefront</span> สินค้า</Link></li>
           <li><Link className="button button-ghost button-content justify-start w-full hover:text-primary-hover" to="./orders"><span className="icon-material">shopping_cart</span> คำสั่งซื้อ</Link></li>
-          <li><Link className="button button-ghost button-content justify-start w-full hover:text-primary-hover" to="#soon"><span className="icon-material">build</span> บริการซ่อมบำรุง</Link></li>
-          <li><Link className="button button-ghost button-content justify-start w-full hover:text-primary-hover" to="#soon"><span className="icon-material">person_outline</span> รายชื่อบัญชี</Link></li>
+          <li><Link className="is-disabled button button-ghost button-content justify-start w-full hover:text-primary-hover" to="#soon"><span className="icon-material">build</span> บริการซ่อมบำรุง</Link></li>
+          <li><Link className="is-disabled button button-ghost button-content justify-start w-full hover:text-primary-hover" to="#soon"><span className="icon-material">person_outline</span> รายชื่อบัญชี</Link></li>
         </ul>
         <ul id="navFooter" className="flex flex-col gap-2 p-2 border-t">
-          <li><Link className="group button button-ghost button-content justify-start items-start w-full hover:text-white py-2 border hover:border-primary-base bg-white hover:bg-primary-base" to="#soon"><span className="icon-material">account_circle</span>
+          <li><Link className="is-disabled group button button-ghost button-content justify-start items-start w-full hover:text-white py-2 border hover:border-primary-base bg-white hover:bg-primary-base" to="#soon"><span className="icon-material">account_circle</span>
             <div className="flex flex-col">
               <span className="leading-6">AAA Admin</span>
               <span className="text-xs text-content-soft group-hover:text-content-light transition-all">ผู้ดูแลระบบ</span>
             </div></Link></li>
-          <li><Link className="button button-ghost button-content justify-start w-full hover:text-error-hover" to="#soon"><span className="icon-material">logout</span> ออกจากระบบ</Link></li>
+          <li><Link className="is-disabled button button-ghost button-content justify-start w-full hover:text-error-hover" to="#soon"><span className="icon-material">logout</span> ออกจากระบบ</Link></li>
         </ul>
       </nav>
     </aside>
   );
+
 };

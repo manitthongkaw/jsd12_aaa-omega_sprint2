@@ -168,6 +168,7 @@
   .button-icon      {@apply justify-center size-10 p-0;}
   .button .icon-material {@apply -mx-1;}
   .button:disabled ,
+  a.is-disabled ,
   .button.is-disabled ,
   .button[aria-disabled="true"] {@apply opacity-40 cursor-not-allowed pointer-events-none;}
   .badge                {@apply inline-flex items-center gap-1 min-h-5 text-xs whitespace-nowrap leading-5 text-white px-2 rounded-sm transition-all;}

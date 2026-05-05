@@ -3,6 +3,7 @@ import Header from "./Header";
 import Sidebar from "./Sidebar";
 
 export default function AdminLayout() {
+
   return (
     <div className="dashboard flex">
       <Header />
@@ -12,4 +13,5 @@ export default function AdminLayout() {
       </main>
     </div>
   );
+
 };

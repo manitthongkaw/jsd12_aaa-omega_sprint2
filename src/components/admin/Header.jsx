@@ -12,4 +12,5 @@ export default function AdminHeader() {
       <button className="nav-toggle button button-icon button-ghost button-content hover:text-primary-hover hover:bg-neutral-lighter" onClick={handleAdminNavMainToggle}><span className="icon-material">menu</span></button>
     </header>
   );
+
 };
