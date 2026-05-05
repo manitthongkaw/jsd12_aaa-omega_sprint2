@@ -10,3 +10,14 @@ createRoot(document.getElementById("root")).render(
     </MessageProvider>
   </StrictMode>
 );
+
+// import { StrictMode } from "react";
+// import { createRoot } from "react-dom/client";
+// import './assets/css/App.css';
+// import AppTest from "./AppTest";
+
+// createRoot(document.getElementById("root")).render(
+//   <StrictMode>
+//     <AppTest />
+//   </StrictMode>
+// );
