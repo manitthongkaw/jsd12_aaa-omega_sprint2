@@ -1,12 +1,55 @@
 import { useState } from "react";
 import bannerCalculate from "../assets/images/banner-calculate.jpg";
 
+const RATE_PER_UNIT = 4.5;      // บาท/หน่วย
+const PEAK_HOURS = 5;           // ชั่วโมงแดดต่อวัน
+const DAYS_PER_MONTH = 30;
+
+const phases = ["1 เฟส", "3 เฟส", "ไม่แน่ใจ"];
+
 function CalculatorSection() {
 
+    const [electricBill, setElectricBill] = useState("");
     const [daytimeUsage, setDaytimeUsage] = useState(50);
     const [selectedPhase, setSelectedPhase] = useState("1 เฟส");
+    const [result, setResult] = useState(null);
 
-    const phases = ["1 เฟส", "3 เฟส", "ไม่แน่ใจ"];
+    const handleCalculate = () => {
+        const bill = parseFloat(electricBill);
+
+        if (!bill || bill <= 0) {
+            alert("กรุณากรอกค่าไฟต่อเดือนให้ถูกต้องครับ");
+            return;
+        }
+
+        if (daytimeUsage <= 0) {
+            alert("กรุณาเลือกการใช้ไฟฟ้าช่วงกลางวันมากกว่า 0% ครับ");
+            return;
+        }
+
+        // คำนวณหน่วยไฟต่อเดือน
+        const unitsPerMonth = bill / RATE_PER_UNIT;
+
+        // คำนวณหน่วยที่ใช้กลางวัน
+        const daytimeUnits = unitsPerMonth * (daytimeUsage / 100);
+
+        // คำนวณขนาดโซลาร์ที่ต้องการ (kW)
+        const solarKW = daytimeUnits / (PEAK_HOURS * DAYS_PER_MONTH);
+
+        // ปัดขึ้นเป็นขนาดมาตรฐาน (ทุก 1 kW)
+        const recommendedKW = Math.ceil(solarKW);
+
+        // คำนวณพลังงานที่ผลิตได้จริงต่อเดือน
+        const energyProduced = recommendedKW * PEAK_HOURS * DAYS_PER_MONTH;
+
+        // คำนวณเงินที่ประหยัดได้ต่อเดือน
+        const savings = Math.round(energyProduced * RATE_PER_UNIT);
+
+        setResult({
+            kw: recommendedKW,
+            savings: savings.toLocaleString(),
+        });
+    };
 
     return (
         <section id="calculate" className="bg-neutral-light py-12 md:py-16">
@@ -36,7 +79,8 @@ function CalculatorSection() {
                                         ขนาดโซลาร์เซลล์
                                     </p>
                                     <p className="text-3xl md:text-5xl font-bold">
-                                        10 <span className="text-sm md:text-xl font-normal">kW</span>
+                                        {result ? result.kw : "-"}{" "}
+                                        <span className="text-sm md:text-xl font-normal">kW</span>
                                     </p>
                                 </div>
 
@@ -47,7 +91,8 @@ function CalculatorSection() {
                                         ประหยัดค่าไฟ
                                     </p>
                                     <p className="text-3xl md:text-5xl font-bold">
-                                        6000 <span className="text-sm md:text-xl font-normal">บาท/เดือน</span>
+                                        {result ? result.savings : "-"}{" "}
+                                        <span className="text-sm md:text-xl font-normal">บาท/เดือน</span>
                                     </p>
                                 </div>
 
@@ -62,7 +107,7 @@ function CalculatorSection() {
                             คำนวณแพ็กเกจโซลาร์เซลล์
                         </h2>
 
-                        {/* Input */}
+                        {/* Input ค่าไฟ */}
                         <div className="space-y-2 md:space-y-3">
                             <label className="text-sm text-content-base font-medium">
                                 ค่าไฟต่อเดือน
@@ -71,6 +116,8 @@ function CalculatorSection() {
                                 <input
                                     type="number"
                                     placeholder="6000"
+                                    value={electricBill}
+                                    onChange={(e) => setElectricBill(e.target.value)}
                                     className="w-full p-3 md:p-4 bg-neutral-lighter border border-content-disable rounded-xl shadow-inner focus:ring-2 focus:ring-content-dark/20 outline-none transition-all"
                                 />
                                 <span className="absolute right-3 md:right-4 top-1/2 -translate-y-1/2 text-content-soft bg-content-disable px-2 md:px-3 py-1 rounded-md text-xs">
@@ -79,19 +126,17 @@ function CalculatorSection() {
                             </div>
                         </div>
 
-                        {/* Range */}
+                        {/* Range การใช้ไฟกลางวัน */}
                         <div className="space-y-2 md:space-y-3">
                             <label className="text-sm text-content-hover font-medium flex justify-between">
                                 <span>การใช้ไฟฟ้าช่วงกลางวัน</span>
-                                {/* เปลี่ยนจาก id="daytime-usage-val" มาใช้ state แทน */}
                                 <span className="text-primary-soft font-bold">{daytimeUsage}%</span>
                             </label>
-                            {/* เปลี่ยนจาก oninput มาใช้ onChange แทน */}
                             <input
                                 type="range"
                                 min="0" max="100" step="10"
                                 value={daytimeUsage}
-                                onChange={(e) => setDaytimeUsage(e.target.value)}
+                                onChange={(e) => setDaytimeUsage(Number(e.target.value))}
                                 className="w-full h-1.5 bg-content-disable rounded-lg appearance-none cursor-pointer accent-primary-soft"
                             />
                             <div className="flex justify-between text-[10px] text-content-soft font-bold">
@@ -106,7 +151,6 @@ function CalculatorSection() {
                                 ระบบไฟฟ้าภายในบ้าน
                             </label>
                             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                                {/* เปลี่ยนจาก class แบบ static มาใช้ state ควบคุมแทน */}
                                 {phases.map((phase) => (
                                     <button
                                         key={phase}
@@ -124,7 +168,10 @@ function CalculatorSection() {
                         </div>
 
                         {/* Submit */}
-                        <button className="w-full bg-primary-disable text-neutral-lighter py-3 md:py-4 rounded-xl font-bold text-base md:text-lg hover:bg-primary-hover transition-all">
+                        <button
+                            onClick={handleCalculate}
+                            className="w-full bg-primary-disable text-neutral-lighter py-3 md:py-4 rounded-xl font-bold text-base md:text-lg hover:bg-primary-hover transition-all"
+                        >
                             คำนวณการใช้งาน
                         </button>
 

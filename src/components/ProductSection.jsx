@@ -1,3 +1,4 @@
+import { useState } from "react";
 import product001 from "../assets/images/product-001.png";
 import product002 from "../assets/images/product-002.png";
 import product003 from "../assets/images/product-003.png";
@@ -21,6 +22,8 @@ const products = [
 const tabs = ["บ้านพักอาศัย", "ภาคพาณิชย์และอุตสาหกรรม", "ระดับโรงไฟฟ้า", "ระบบกักเก็บพลังงาน", "ไมโครกริดอัจฉริยะ"];
 
 function ProductSection() {
+    const [activeTab, setActiveTab] = useState(tabs[0]);
+
     return (
         <section id="product" className="py-12 md:py-20 px-4">
             <div className="container mx-auto text-center">
@@ -35,8 +38,9 @@ function ProductSection() {
                         {tabs.map((tab, index) => (
                             <button
                                 key={index}
-                                className={`px-4 md:px-5 py-2 rounded-lg text-sm whitespace-nowrap
-                                    ${index === 0
+                                onClick={() => setActiveTab(tab)}
+                                className={`px-4 md:px-5 py-2 rounded-lg text-sm whitespace-nowrap transition-all
+                                    ${activeTab === tab
                                         ? "bg-primary-hover text-neutral-lighter"
                                         : "text-neutral-hover hover:bg-neutral-lighter"
                                     }`}
