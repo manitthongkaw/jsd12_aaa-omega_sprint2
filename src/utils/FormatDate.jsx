@@ -1,4 +1,4 @@
-export const formatDate = (date) => {
+export const FormatDate = (date) => {
   return new Intl.DateTimeFormat("th-TH", {
     day  : "2-digit",
     month: "2-digit",
