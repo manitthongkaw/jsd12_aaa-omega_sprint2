@@ -2,12 +2,13 @@ import { Link, useNavigate } from "react-router-dom";
 import StatCard from "../../components/admin/StatCard";
 import { FormatDate } from "../../utils/FormatDate";
 import { FormatPrice } from "../../utils/FormatPrice";
+import { DataNotFound } from "../../utils/DataNotFound";
 import { orders } from "../../mockup-data/orders";
 
 export default function AdminOrders() {
 
   const navigate = useNavigate();
-  const handleOrderItem = (ordersId) => navigate(`./${ordersId}`);
+  const handleOrderItem = (orderId) => navigate(`./${orderId}`);
 
   return (
     <>
@@ -42,12 +43,12 @@ export default function AdminOrders() {
             <tbody>
               {orders.slice(0, 10).map((order) => (
                 <tr key={order._id}>
-                  <td>{FormatDate(order.createdAt)}</td>
-                  <td><button onClick={() => handleOrderItem(order.orderId)}>{order.orderId}</button></td>
-                  <td><button onClick={() => handleOrderItem(order.orderId)}>{order.customerName}</button></td>
-                  <td className="text-right">{FormatPrice(order.totalPrice)}</td>
+                  <td>{order.createdAt ? FormatDate(order.createdAt) : <DataNotFound />}</td>
+                  <td><button onClick={() => handleOrderItem(order.orderId)}>{order.orderId || <DataNotFound />}</button></td>
+                  <td><button onClick={() => handleOrderItem(order.orderId)}>{order.customerName || <DataNotFound />}</button></td>
+                  <td className="text-right">{order.totalPrice > 0 ? FormatPrice(order.totalPrice) : <DataNotFound />}</td>
                   <td>
-                    <select className="button button-soft button-content" name="statusOrder" defaultValue={order.status}>
+                    <select className="button button-soft button-content" name="statusOrder" defaultValue={order.status || ""}>
                       <option value="" disabled hidden>เลือกสถานะ</option>
                       <option value="pending_payment">รอชำระเงิน</option>
                       <option value="paid">ชำระเงินแล้ว</option>
@@ -63,11 +64,11 @@ export default function AdminOrders() {
           </table>
         </div>
         <nav className="pagination">
-          <Link className="button button-icon button-soft button-content is-disabled" href="#pagination"><span className="icon-material">keyboard_arrow_left</span></Link>
-          <Link className="button button-icon button-primary" href="#pagination">1</Link>
-          <Link className="button button-icon button-soft button-content" href="#pagination">2</Link>
-          <Link className="button button-icon button-soft button-content" href="#pagination">3</Link>
-          <Link className="button button-icon button-soft button-content" href="#pagination"><span className="icon-material">keyboard_arrow_right</span></Link>
+          <Link className="button button-icon button-soft button-content is-disabled" to="#pagination"><span className="icon-material">keyboard_arrow_left</span></Link>
+          <Link className="button button-icon button-primary" to="#pagination">1</Link>
+          <Link className="button button-icon button-soft button-content" to="#pagination">2</Link>
+          <Link className="button button-icon button-soft button-content" to="#pagination">3</Link>
+          <Link className="button button-icon button-soft button-content" to="#pagination"><span className="icon-material">keyboard_arrow_right</span></Link>
         </nav>
       </section>
     </>

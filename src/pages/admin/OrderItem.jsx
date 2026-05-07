@@ -1,8 +1,8 @@
 import { useParams } from "react-router-dom";
 import { FormatDate } from "../../utils/FormatDate";
 import { FormatPrice } from "../../utils/FormatPrice";
+import { DataNotFound } from "../../utils/DataNotFound";
 import { orders } from "../../mockup-data/orders";
-import DataNotFound from "../../utils/DataNotFound";
 
 export default function AdminOrderItem() {
 
@@ -16,8 +16,8 @@ export default function AdminOrderItem() {
   return (
     <>
       <section id="orderEdit" className="flex flex-row flex-wrap justify-between items-center gap-10">
-        <h1><span className="text-content-hover">รายละเอียดคำสั่งซื้อ:</span> {order.orderId}</h1>
-        <select className="button button-soft button-content" name="statusOrder" defaultValue={order.status}>
+        <h1><span className="text-content-hover">รายละเอียดคำสั่งซื้อ:</span> {order.orderId || <DataNotFound />}</h1>
+        <select className="button button-soft button-content" name="statusOrder" defaultValue={order.status || ""}>
           <option value="" disabled hidden>เลือกสถานะ</option>
           <option value="pending_payment">รอชำระเงิน</option>
           <option value="paid">ชำระเงินแล้ว</option>
@@ -34,23 +34,27 @@ export default function AdminOrderItem() {
           <tbody>
             <tr>
               <th>วันที่สั่งซื้อ</th>
-              <td>{FormatDate(order.createdAt) ? FormatDate(order.createdAt) : <DataNotFound />}</td>
+              <td>{order.createdAt ? FormatDate(order.createdAt) : <DataNotFound />}</td>
             </tr>
             <tr>
               <th>ชื่อผู้สั่งชื่อ</th>
-              <td>{order.customerName ? order.customerName : <DataNotFound />}</td>
+              <td>{order.customerName || <DataNotFound />}</td>
             </tr>
             <tr>
               <th>เบอร์ติดต่อ</th>
-              <td>{order.customerPhone ? order.customerPhone : <DataNotFound />}</td>
+              <td>{order.customerPhone || <DataNotFound />}</td>
             </tr>
             <tr>
               <th>อีเมล</th>
-              <td>{order.customerEmail ? order.customerEmail : <DataNotFound />}</td>
+              <td>{order.customerEmail || <DataNotFound />}</td>
             </tr>
             <tr>
               <th>ที่อยู่จัดส่ง</th>
-              <td>{order.shippingAddress ? order.shippingAddress : <DataNotFound />}</td>
+              <td>{order.shippingAddress || <DataNotFound />}</td>
+            </tr>
+            <tr>
+              <th>หมายเหตุ</th>
+              <td>{order.deliveryNote || <DataNotFound />}</td>
             </tr>
           </tbody>
         </table>
@@ -72,48 +76,30 @@ export default function AdminOrderItem() {
                 <th scope="col" className="text-right">ราคารวม</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>Solar Panel Mono 450W</td>
-                <td>SP-450-MN</td>
-                <td className="text-right">50</td>
-                <td className="text-right">4,800</td>
-                <td className="text-right">240,000</td>
-              </tr>
-              <tr>
-                <td>Hybrid Inverter 5kW</td>
-                <td>IV-5KW-HB</td>
-                <td className="text-right">1</td>
-                <td className="text-right">28,500</td>
-                <td className="text-right">28,500</td>
-              </tr>
-              <tr>
-                <td>MC4 Connector</td>
-                <td>ACC-MC4-P</td>
-                <td className="text-right">200</td>
-                <td className="text-right">45</td>
-                <td className="text-right">9,000</td>
-              </tr>
-            </tbody>
+            {<tbody>
+              {order.items.map((item) => (
+                <tr key={item.productId}>
+                  <td>{item.name || <DataNotFound />}</td>
+                  <td>{item.sku || <DataNotFound />}</td>
+                  <td className="text-right">{item.quantity > 0 ? item.quantity : <DataNotFound />}</td>
+                  <td className="text-right">{item.priceAtPurchase >= 0 ? FormatPrice(item.priceAtPurchase) : <DataNotFound />}</td>
+                  <td className="text-right">{item.priceAtPurchase >= 0 && item.quantity > 0 ? FormatPrice(item.priceAtPurchase * item.quantity) : <DataNotFound />}</td>
+                </tr>
+              ))}
+            </tbody>}
             <tfoot>
               <tr className="border-t-neutral-disable">
                 <td></td>
                 <th colSpan="3">ยอดรวมสุทธิ</th>
-                <td className="text-right">{FormatPrice(order.totalPrice)}</td>
+                <td className="text-right">{order.totalPrice > 0 ? FormatPrice(order.totalPrice) : <DataNotFound />}</td>
               </tr>
             </tfoot>
           </table>
         </div>
         <form className="lg:grow self-start lg:w-1/2">
-          <div className="input-row">
-            <div className="input-group">
-              <label htmlFor="message">หมายเหตุ:</label>
-              <textarea id="message" className="min-h-15.5 sm:min-h-38" rows="4" placeholder="กรอกรายละเอียด?"></textarea>
-            </div>
-            <div className="input-group">
-              <label htmlFor="note">โน้ตภายใน:</label>
-              <textarea id="note" className="min-h-15.5 sm:min-h-38" rows="4" placeholder="กรอกข้อความตามต้องการ?"></textarea>
-            </div>
+          <div className="input-group">
+            <label htmlFor="note">โน้ตภายใน:</label>
+            <textarea id="note" className="min-h-15.5 sm:min-h-38" rows="4" defaultValue={order.internalNote || ""} placeholder="กรอกข้อความตามต้องการ?"></textarea>
           </div>
           <div className="button-row">
             <button type="reset" className="button button-soft button-content">ยกเลิก</button>
