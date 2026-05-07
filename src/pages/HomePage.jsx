@@ -4,3 +4,5 @@
 // - แยก Calculator section
 // - แยก Footer
 // - ต้องปรับภาพและ path ให้ตรง src/assets
+
+export default HomePage;

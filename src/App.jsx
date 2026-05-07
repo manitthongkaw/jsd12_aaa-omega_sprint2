@@ -1,53 +1,60 @@
+import { useState } from 'react';
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import { createBrowserRouter, RouterProvider} from "react-router-dom";
-import HomePage from "./pages/HomePage";
-import TestimonialsPage from "./pages/TestimonialsPage";
+// นำเข้า Header
+import Header from "./components/HeaderSection"; 
+import HeroSection from "./components/HeroSection";
+import ProductHighlight from "./components/ProductHighlight";  
+import CalculatorSection from "./components/CalculatorSection"; 
+import FooterSection from "./components/FooterSection";     
+// นำเข้า CSS และหน้าฝั่ง Admin
 import AdminLayout from "./components/admin/Layout";
 import AdminHome from "./pages/admin/Home";
 import AdminProducts from "./pages/admin/Products";
-import AdminProductItem from "./pages/admin/ProductItem";
+
 import AdminOrders from "./pages/admin/Orders";
 import AdminOrderItem from "./pages/admin/OrderItem";
 import './assets/css/App.css';
 
-
+// นำเข้าหน้าฝั่ง User
+import TestimonialsPage from './pages/TestimonialsPage';
 
 const router = createBrowserRouter([
   {
     path: "/",
     children: [
       {
-        index: true, // หน้าแรกสุด (/)
-        element: <HomePage />,
+        index: true, 
+        // ใส่ Header เฉพาะหน้า HomePage
+        element: (
+          <>
+            <Header />
+            <HeroSection />
+            <ProductHighlight />
+            <CalculatorSection />
+            <FooterSection />
+          </>
+        ),
       },
       {
-        path: "testimonials", // หน้ารีวิวลูกค้า (/testimonials)
-        element: <TestimonialsPage />,
+        path: "testimonials",
+        // ใส่ Header เฉพาะหน้า TestimonialsPage
+        element: (
+          <>
+            <Header />
+            <TestimonialsPage />
+          </>
+        ),
       },
       {
-        path: "admin", // โซน Admin (/admin)
+        path: "admin",
+        
         element: <AdminLayout />,
         children: [
-          {
-            index: true, // หน้าหลักของ admin (/admin)
-            element: <AdminHome />,
-          },
-          {
-            path: "products", // (/admin/products)
-            element: <AdminProducts />,
-          },
-          {
-            path: "products/:productId",
-            element: <AdminProductItem />,
-          },
-          {
-            path: "orders", // (/admin/orders)
-            element: <AdminOrders />,
-          },
-          {
-            path: "orders/:orderId",
-            element: <AdminOrderItem />,
-          },
+          { index: true, element: <AdminHome /> },
+          { path: "products", element: <AdminProducts /> },
+          { path: "orders", element: <AdminOrders /> },
+          { path: "orders/:orderId", element: <AdminOrderItem /> },
         ],
       },
     ],
