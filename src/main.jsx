@@ -11,11 +11,6 @@ createRoot(document.getElementById("root")).render(
   </StrictMode>
 );
 
-
-
-
-// // Test for Homepage(CARD)
-
 // import { StrictMode } from "react";
 // import { createRoot } from "react-dom/client";
 // import './assets/css/App.css';
@@ -26,5 +21,3 @@ createRoot(document.getElementById("root")).render(
 //     <AppTest />
 //   </StrictMode>
 // );
-
-// // Test for Homepage(CARD)
