@@ -2,11 +2,8 @@ import { useState } from 'react';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 // นำเข้า Header
-import Header from "./components/HeaderSection"; 
-import HeroSection from "./components/HeroSection";
-import ProductHighlight from "./components/ProductHighlight";  
-import CalculatorSection from "./components/CalculatorSection"; 
-import FooterSection from "./components/FooterSection";     
+import Header from "./components/HeaderSection";
+
 // นำเข้า CSS และหน้าฝั่ง Admin
 import AdminLayout from "./components/admin/Layout";
 import AdminHome from "./pages/admin/Home";
@@ -17,6 +14,7 @@ import AdminOrderItem from "./pages/admin/OrderItem";
 import './assets/css/App.css';
 
 // นำเข้าหน้าฝั่ง User
+import HomePage from './pages/HomePage';
 import TestimonialsPage from './pages/TestimonialsPage';
 
 const router = createBrowserRouter([
@@ -24,17 +22,28 @@ const router = createBrowserRouter([
     path: "/",
     children: [
       {
-        index: true, 
-        // ใส่ Header เฉพาะหน้า HomePage
-        element: (
-          <>
-            <Header />
-            <HeroSection />
-            <ProductHighlight />
-            <CalculatorSection />
-            <FooterSection />
-          </>
-        ),
+        index: true,
+        element: <HomePage />,
+      },
+      {
+        path: "home",
+        element: <HomePage />,
+      },
+      {
+        path: "products",        // สินค้า
+        element: <div>Products Page (Coming Soon)</div>,
+      },
+      {
+        path: "services",        // บริการ
+        element: <div>Services Page (Coming Soon)</div>,
+      },
+      {
+        path: "portfolio",       // ผลงาน 
+        element: <div>Portfolio Page (Coming Soon)</div>,
+      },
+      {
+        path: "contact",         // ติดต่อเรา 
+        element: <div>Contact Page (Coming Soon)</div>,
       },
       {
         path: "testimonials",
@@ -48,7 +57,7 @@ const router = createBrowserRouter([
       },
       {
         path: "admin",
-        
+
         element: <AdminLayout />,
         children: [
           { index: true, element: <AdminHome /> },
