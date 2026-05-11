@@ -1,77 +1,69 @@
 import { useState } from 'react';
-import { createBrowserRouter, RouterProvider, Link } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
+// นำเข้า Header
+import Header from "./components/HeaderSection";
 
 // นำเข้า CSS และหน้าฝั่ง Admin
 import AdminLayout from "./components/admin/Layout";
 import AdminHome from "./pages/admin/Home";
 import AdminProducts from "./pages/admin/Products";
-import AdminProductItem from "./pages/admin/ProductItem";
+
 import AdminOrders from "./pages/admin/Orders";
 import AdminOrderItem from "./pages/admin/OrderItem";
 import './assets/css/App.css';
 
 // นำเข้าหน้าฝั่ง User
+import HomePage from './pages/HomePage';
 import TestimonialsPage from './pages/TestimonialsPage';
-
-// --- ส่วนหน้าแรก (HomePage) สำหรับฝั่ง User ---
-const HomePage = () => {
-  const [count, setCount] = useState(0);
-  return (
-    <section id="center" style={{ textAlign: 'center', padding: '50px' }}>
-      <div className="hero">
-        <h1 style={{ fontSize: '3rem', color: '#646cff' }}>AAA Omega</h1>
-      </div>
-      <button className="counter" onClick={() => setCount(count + 1)}>
-        Count is {count}
-      </button>
-      <div style={{ marginTop: '30px', display: 'flex', gap: '10px', justifyContent: 'center' }}>
-        <Link to="/testimonials" className="counter" style={{ background: '#1a365d', color: 'white', textDecoration: 'none' }}>
-          Testimonials
-        </Link>
-        <Link to="/admin" className="counter" style={{ background: '#4a5568', color: 'white', textDecoration: 'none' }}>
-          เข้าสู่ระบบ Admin
-        </Link>
-      </div>
-    </section>
-  );
-};
 
 const router = createBrowserRouter([
   {
     path: "/",
     children: [
       {
-        index: true, // หน้าแรกสุด (/)
+        index: true,
         element: <HomePage />,
       },
       {
-        path: "testimonials", // หน้ารีวิวลูกค้า (/testimonials)
-        element: <TestimonialsPage />,
+        path: "home",
+        element: <HomePage />,
       },
       {
-        path: "admin", // โซน Admin (/admin)
+        path: "products",        // สินค้า
+        element: <div>Products Page (Coming Soon)</div>,
+      },
+      {
+        path: "services",        // บริการ
+        element: <div>Services Page (Coming Soon)</div>,
+      },
+      {
+        path: "portfolio",       // ผลงาน 
+        element: <div>Portfolio Page (Coming Soon)</div>,
+      },
+      {
+        path: "contact",         // ติดต่อเรา 
+        element: <div>Contact Page (Coming Soon)</div>,
+      },
+      {
+        path: "testimonials",
+        // ใส่ Header เฉพาะหน้า TestimonialsPage
+        element: (
+          <>
+            <Header />
+            <TestimonialsPage />
+          </>
+        ),
+      },
+      {
+        path: "admin",
+
         element: <AdminLayout />,
         children: [
-          {
-            index: true, // หน้าหลักของ admin (/admin)
-            element: <AdminHome />,
-          },
-          {
-            path: "products", // (/admin/products)
-            element: <AdminProducts />,
-          },
-          {
-            path: "products/:productId",
-            element: <AdminProductItem />,
-          },
-          {
-            path: "orders", // (/admin/orders)
-            element: <AdminOrders />,
-          },
-          {
-            path: "orders/:orderId",
-            element: <AdminOrderItem />,
-          },
+          { index: true, element: <AdminHome /> },
+          { path: "products", element: <AdminProducts /> },
+          { path: "orders", element: <AdminOrders /> },
+          { path: "orders/:orderId", element: <AdminOrderItem /> },
         ],
       },
     ],
