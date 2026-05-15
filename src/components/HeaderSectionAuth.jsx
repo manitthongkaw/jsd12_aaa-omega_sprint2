@@ -8,19 +8,14 @@ function HeaderSectionAuth() {
   const [portalNode, setPortalNode] = useState(null);
 
   useEffect(() => {
-    // หา container ที่เก็บปุ่มไอคอนคนและตะกร้าใน HeaderSection
     const headerIconsContainer = document.querySelector("header nav .flex.items-center.space-x-4");
     
     if (headerIconsContainer) {
-      // สร้าง span เพื่อเป็นจุดยึด (Portal) ให้ข้อความเข้าสู่ระบบ
       const node = document.createElement("span");
-      node.className = "flex items-center -ml-2"; // ใช้ -ml-2 เพื่อให้ชิดกับไอคอนคน
-      
-      // หาปุ่มไอคอนคน (ปุ่มแรกใน container)
+      node.className = "flex items-center -ml-2";
       const personButton = headerIconsContainer.querySelector("button");
       
       if (personButton) {
-        // แทรกข้อความต่อท้ายปุ่มไอคอนคน
         personButton.after(node);
       } else {
         headerIconsContainer.prepend(node);
@@ -28,7 +23,6 @@ function HeaderSectionAuth() {
       
       setPortalNode(node);
 
-      // คืนค่า node กลับเมื่อ Component ถูกทำลาย
       return () => {
         if (node.parentNode) {
           node.parentNode.removeChild(node);
@@ -46,12 +40,10 @@ function HeaderSectionAuth() {
     </Link>
   );
 
-  // ถ้ายึด DOM ได้แล้ว ให้เรนเดอร์ผ่าน Portal ไปโผล่ใน HeaderSection เลย
   if (portalNode) {
     return createPortal(loginContent, portalNode);
   }
 
-  // ถ้ายังหาไม่เจอ ให้คืนค่า null จะได้ไม่ไปโผล่ในบรรทัดอื่นให้เกะกะ
   return null;
 }
 
