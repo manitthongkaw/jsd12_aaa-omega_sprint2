@@ -1,5 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
+import AllProductsPage from './pages/AllProductsPage';
+
 // นำเข้า Header
 import Header from "./components/HeaderSection";
 
@@ -28,6 +30,7 @@ import './assets/css/App.css';
 // นำเข้าหน้าฝั่ง User
 import HomePage from './pages/HomePage';
 import TestimonialsPage from './pages/TestimonialsPage';
+import ProductDetailPage from './pages/ProductDetailPage'; 
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import UserProfilePage from './pages/UserProfilePage';
@@ -37,6 +40,16 @@ const router = createBrowserRouter([
     path: "/",
     children: [
       {
+        index: true, 
+        element: (
+          <>
+            <Header />
+            <HeroSection />
+            <ProductHighlight />
+            <CalculatorSection />
+            <FooterSection />
+          </>
+        ),
         index: true,
         element: <HomePage />,
       },
@@ -61,8 +74,17 @@ const router = createBrowserRouter([
         element: <div>Contact Page (Coming Soon)</div>,
       },
       {
+  path: "allproducts", // แนะนำให้ใช้ "products" (เติม s) ให้ตรงกับที่เขียนใน HeaderSection.jsx
+  element: (
+    <>
+      <Header />
+      <AllProductsPage /> {/* ไม่ต้องใส่ FilterSection ตรงนี้ เพราะมันอยู่ใน AllProductsPage แล้ว */}
+      <FooterSection />   {/* แนะนำให้ใส่ Footer ไว้ท้ายหน้าด้วยครับ */}
+    </>
+  ),
+},
+      {
         path: "testimonials",
-        // ใส่ Header เฉพาะหน้า TestimonialsPage
         element: (
           <>
             <Header />
@@ -70,7 +92,20 @@ const router = createBrowserRouter([
           </>
         ),
       },
+      // 2. แก้จุดนี้ (บรรทัดที่ 53) ให้รองรับ Parameter :productId
       {
+        path: "product/:productId", 
+        element: (
+          <>
+            <Header />
+            <ProductDetailPage /> {/* ใช้ชื่อ Component ให้ตรงกับที่ import มาใหม่ */}
+            <FooterSection />
+          </>
+        ),
+      },
+      {
+        path: "admin",
+        element: <AdminLayout />,
         path: "login",
         element: <LoginPage />,
       },
