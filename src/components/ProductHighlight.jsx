@@ -24,9 +24,8 @@ function ProductHighlight() {
   return [...allProducts].sort(() => 0.5 - Math.random()).slice(0, 8);
 });
   const [activeTab, setActiveTab] = useState(tabs[0]);
-  // 2. สร้างฟังก์ชันสำหรับการเปลี่ยนหน้า
   const handleViewAll = () => {
-    navigate("//allproducts");
+    navigate("/allproducts");
   };
 
   return (
